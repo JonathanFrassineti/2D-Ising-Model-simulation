@@ -5,14 +5,15 @@ Created on Tue Oct 15 14:09:18 2019
 @author: Jonathan Frassineti
 """
 
-from Ising import Ising
+from ising import Ising
+import numpy as np
 
-init_state = 5
-model = Ising(state=init_state)
+N = 100
 
-def test_init():
-    assert model.state == init_state
-    
-    
+def test_initialstate():
+    state = Ising()
+    model =state.initialstate(N)
+    assert model.all() == 1 or model.all() == -1
+            
 if __name__ == '__main__':
-    test_init()
+    pass
