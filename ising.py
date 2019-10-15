@@ -10,9 +10,10 @@ import matplotlib.pyplot as plt
 
 class Ising():
     "This class simulates the Ising model in 2 dimensions."
-    def __init__(self, state=10):
-        self.state = state
+    def initialstate(self,N):
+        "This method generates a random spin configuration for initial condition."
+        state = 2*np.random.randint(2,size=(N,N))-1
+        return (state)
         
-
 if __name__ == '__main__':
     pass
