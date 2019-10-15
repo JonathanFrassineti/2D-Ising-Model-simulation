@@ -13,5 +13,6 @@ class Ising():
     def __init__(self, state=10):
         self.state = state
         
+
 if __name__ == '__main__':
-    model = Ising()
+    pass
