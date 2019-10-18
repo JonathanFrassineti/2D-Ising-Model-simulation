@@ -51,6 +51,13 @@ def test_energy():
     "Test if the final energy is really different from the initial energy."
     assert state.energy(N, model) != init
         
+def test_mag():
+    "This method calculates the magnetization of a given configuration."
+    model = state.initialstate(N)
+    "Test if the magnetization is really the sum of all the elements of the configuration."
+    assert state.mag(model) == np.sum(model)
+    "Test if the magnetization is different from 0."
+    assert state.mag(model) != 0
        
 if __name__ == "main":
     pass                
