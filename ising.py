@@ -49,6 +49,11 @@ class Ising():
                 "The change in energy is given by the product of the (x,y) spin and the 4 nearest neighbours spins."
                 energy += -ss*zz
         return energy/4
+    
+    def mag(self,config):
+        "This method calculates the magnetization of a given configuratiin of spins."
+        magn = np.sum(config)
+        return magn  
 
 if __name__ == "main":
     pass  
