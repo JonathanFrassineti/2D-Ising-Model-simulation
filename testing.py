@@ -41,7 +41,16 @@ def test_montmove():
         diff = config - init
         "Test if the modified state is really different from the original one."
         assert np.any(diff) == True
-                                        
+
+def test_energy():
+    "This method calculates the energy of a given configuration, given the exchange constant J = 1."
+    energy = 0
+    "Copy the initial energy in order to compare it with the modified one."
+    init = copy.deepcopy(energy)
+    model = state.initialstate(N)
+    "Test if the final energy is really different from the initial energy."
+    assert state.energy(N, model) != init
+        
        
 if __name__ == "main":
     pass                
