@@ -82,6 +82,21 @@ class Ising():
         plt.pcolormesh(X, Y, configuration, cmap=plt.cm.RdBu)
         plt.title('Time=%d'%i); plt.axis('tight')    
     plt.show()
-                    
+    
+    def graphPlot(self,T,E,M):
+        f = plt.figure(figsize=(18, 18)) # plot the calculated values    
+        sp =  f.add_subplot(2, 2, 1 )
+        plt.scatter(T, E, s=50, marker='o', color='IndianRed')
+        plt.xlabel("Temperature (T)", fontsize=20)
+        plt.ylabel("Energy ", fontsize=20)        
+        plt.axis('tight')
+        sp =  f.add_subplot(2, 2, 2 )
+        plt.scatter(T, abs(M), s=50, marker='o', color='RoyalBlue')
+        plt.xlabel("Temperature (T)", fontsize=20) 
+        plt.ylabel("Magnetization ", fontsize=20)   
+        plt.axis('tight')
+        f.savefig('energy_magnetization.png')
+        
+                
 if __name__ == "main":
     pass  
