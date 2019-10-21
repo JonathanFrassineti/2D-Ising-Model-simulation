@@ -33,8 +33,17 @@ The following code simulates the Ising model in 2D using the Metropolis algorith
 
 Repeat 2-4. 
 
-In the file [ising](https://github.com/JonathanFrassineti/Software-Project/blob/master/ising.py) I have built the class Ising that estimates and plots energy and magnetization of the system, and for a given temperature plots the time evolution of the system from disordered state to ordered state.  
+For references about Metropolis algorithm, see [this link](https://www.asc.ohio-state.edu/braaten.1/statphys/Ising_MatLab.pdf).
 
-In the file [testing](https://github.com/JonathanFrassineti/Software-Project/blob/master/testing.py) I have tested all the methods of class Ising to ensure that all of them work properly.
+## Structure of the project
 
+This is how I divided my project into blocks:
+
+- In the file [ising](https://github.com/JonathanFrassineti/Software-Project/blob/master/ising.py) I have built the class Ising that estimates and plots energy and magnetization of the system, and for a given temperature plots the time evolution of the system from disordered state to ordered state.  
+
+- In the file [testing](https://github.com/JonathanFrassineti/Software-Project/blob/master/testing.py) I have tested all the methods of class Ising to ensure that all of them work properly.
+
+- In the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) there is the main part of the code, where I have created an Ising object that executes all the methods in order to calculate the energy and the magnetization of a configuration of spins; in addition, I have printed the time evolution of a given configuration of spins for a specific temperature.
+
+And this is how the simulation of a given configuration looks like, for a given temperature and during the time: ![config](configPlot.png)
 
