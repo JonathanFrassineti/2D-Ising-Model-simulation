@@ -70,8 +70,9 @@ class Ising():
             if i == 32:      self.configurationPlot(f, configuration, i, N, 4)
             if i == 100:     self.configurationPlot(f, configuration, i, N, 5)
             if i == 1000:    self.configurationPlot(f, configuration, i, N, 6)
+        f.savefig('configPlot.png') 
         return a
-        f.savefig('configPlot.png')    
+           
         
     def configurationPlot(self, f, configuration, i, N, n):
         # This module plots the configuration once passed to it along with time, for a given T.
