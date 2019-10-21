@@ -58,7 +58,17 @@ def test_mag():
     assert state.mag(model) == np.sum(model)
     #Test if the magnetization is different from 0."
     assert state.mag(model) != 0
-       
+
+def test_simulate():
+    #This method simulates the Ising model of a given configuration for a specific T."
+    x = state.initialstate(N)
+    y = state.simulate(N)
+    diff = x - y 
+    assert np.any(diff) == True  #Test if the final configuration is really different form the inital one"
+    assert np.sum(y) != np.sum(x) #Test if the final magnetization is different than the initial one.
+
+
+
 if __name__ == "main":
     pass                
             
