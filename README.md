@@ -45,5 +45,5 @@ This is how I divided my project into blocks:
 
 - In the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) there is the main part of the code, where I have created an Ising object that executes all the methods in order to calculate the energy and the magnetization of a configuration of spins; in addition, I have printed the time evolution of a given configuration of spins for a specific temperature.
 
-And this is how the simulation of a given configuration looks like, for a given temperature and during the time: ![config](images\configPlot.png)
+And this is how the simulation of a given configuration looks like, for a given temperature and during the time: ![config](./images/configPlot.png)
 
