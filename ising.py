@@ -13,13 +13,33 @@ class Ising():
     #This class simulates the Ising model in 2 dimensions.
     
     def initialstate(self,N):
-        #This method generates a random spin configuration for initial condition.
+        """This method generates a random spin configuration 
+        for the initial condition.
+           
+        Parameters:
+            N : length of the square lattice (N*N).
+            
+        Returns:
+            The state of the configuration of the (N*N) spins. """
         state = np.random.choice([-1,1],size=(N,N))
         return state
         
     
     def montmove(self,N,config,beta):
-        #This method creates a Monte Carlo move using the Metropolis algorithm.
+        """This method creates a Monte Carlo 
+        move using the Metropolis algorithm.
+        
+        Parameters:
+            N : length of the square lattice (N*N).
+            config: state of the configuration created by 
+            initialstate(N).
+            beta: 1/kT, where T is temperature and Boltzmann constant
+            k is out equal to 1.
+            
+        Returns:
+            The modified state of the lattice where the energy is
+            lower than the initial one.
+        """
         for i in range(N):
             for j in range(N):
                 x = np.random.randint(0,N)
@@ -40,7 +60,18 @@ class Ising():
         return config
     
     def energy(self,N,config):
-        #This method calculates the energy of a given configuration, given the exchange constant J = 1.
+        """This method calculates the energy of a 
+        given configuration, given the exchange constant J = 1.
+        
+        Parameters:
+            N : length of the square lattice (N*N).
+            config: state of the configuration created by 
+            initialstate(N).
+            
+        Returns:
+            The calculated energy of the modified configuration
+            of the lattice.
+        """
         energy = 0
         for i in range(len(config)):
             for j in range(len(config)):
@@ -51,13 +82,33 @@ class Ising():
         return energy/4
     
     def mag(self,config):
-        #This method calculates the magnetization of a given configuratiin of spins.
+        """This method calculates the magnetization of a 
+        given configuration of spins.
+        
+        Parameters:
+            config: state of the configuration created by 
+            initialstate(N).
+            
+        Returns:
+            The magnetization of the modified lattice, 
+            which is the sum of all the spins.
+        """
         magn = np.sum(config)
         return magn
         
     
     def simulate(self,N):   
-        #This module simulates the Ising model lattice for a given temperature, under the critical temperature, where the systemis ordered (ferromagnetic state).
+        """This module simulates the Ising model lattice 
+        for a given temperature, under the critical temperature, 
+        where the systemis ordered (ferromagnetic state).
+        
+        Parameters:
+            N : length of the square lattice (N*N).
+            
+        Reurns:
+            The time evolution of the lattice configuration
+            for a given temperature.
+        """
         temp = 1 # Initialise the lattice with temperature equal to 1.
         configuration = np.random.choice([-1,1],size=(N,N))
         f = plt.figure(figsize=(15, 15), dpi=80);    
@@ -75,16 +126,34 @@ class Ising():
            
         
     def configurationPlot(self, f, configuration, i, N, n):
-        # This module plots the configuration once passed to it along with time, for a given T.
+        """This module plots the configuration once 
+        passed to it along with time, for a given T.
+        
+        Parameters:
+            f: figure to plot.
+            configuration: state of the configuration created by 
+            initialstate(N).
+            i: time interval.
+            N: length of the square lattice (N*N).
+            n: number of subplot.
+        """
         X, Y = np.meshgrid(range(N), range(N))
         sp =  f.add_subplot(3, 3, n)  
         plt.setp(sp.get_yticklabels(), visible=False)
         plt.setp(sp.get_xticklabels(), visible=False)      
         plt.pcolormesh(X, Y, configuration, cmap=plt.cm.RdBu)
         plt.title('Time=%d'%i); plt.axis('tight')    
-    plt.show()
+        plt.show()
     
     def graphPlot(self,T,E,M):
+        """ This method plots the magnetization and the energy
+        of the lattice.
+        
+        Parameters:
+            T: temperature.
+            E: energy of the lattice.
+            M: magnetization of the lattice.
+        """
         f = plt.figure(figsize=(18, 18)) # plot the calculated values    
         sp =  f.add_subplot(2, 2, 1 )
         plt.scatter(T, E, s=50, marker='o', color='IndianRed')
