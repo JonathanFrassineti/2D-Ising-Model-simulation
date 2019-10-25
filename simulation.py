@@ -4,42 +4,30 @@ Created on Mon Oct 21 16:25:29 2019
 
 @author: Jonathan Frassineti
 """
-from ising import Ising
+import ising
+import configuration
 import numpy as np
-from numpy.random import rand
-import matplotlib.pyplot as plt
 
 #main part of the code
-
-rm = Ising()
-nt = 88      #  number of temperature points
-N = 16         #  size of the lattice, N x N
-eqSteps = 1024      #  number of MC sweeps for equilibration
-mcSteps = 1024       #  number of MC sweeps for calculation
-
-T = np.linspace(1.58, 3.38, nt); 
-E,M = np.zeros(nt), np.zeros(nt)
-n1 = 1.0/(mcSteps*N*N)
-# divide by number of samples, and by system size to get intensive values
-
-for tt in range(nt):
-    E1 = M1 = 0
-    config = rm.initialstate(N)
-    iT=1.0/T[tt]
+for tempInterval in range(configuration.numberTemp):
+    config = ising.initialstate(configuration.N,configuration.M)
+    Energy1 = Magn1 = 0
     
-    for i in range(eqSteps):         # equilibrate
-        rm.montmove(N,config, iT)           # Monte Carlo moves
+    for i in range(configuration.eqSteps):
+        ising.montmove(config,configuration.inverseTemp[tempInterval])
 
-    for i in range(mcSteps):
-        rm.montmove(N,config, iT)           
-        Ene = rm.energy(N,config)     # calculate the energy
-        Mag = rm.mag(config)        # calculate the magnetisation
+    for i in range(configuration.eqSteps):
+        ising.montmove(config,configuration.inverseTemp[tempInterval])           
+        Energy = ising.calculateEnergy(config)     # calculate the energy
+        Magn = ising.calculateMagn(config)        # calculate the magnetisation
+        Energy1 += Energy
+        Magn1 +=  Magn
 
-        E1 = E1 + Ene
-        M1 = M1 + Mag
+    configuration.Energy[tempInterval] = configuration.n1*Energy1
+    configuration.Magn[tempInterval] = configuration.n1*Magn1
+    
+np.save('./data/ene',configuration.Energy)
+np.save('./data/mag',configuration.Magn)
 
-    E[tt] = n1*E1
-    M[tt] = n1*M1
-
-rm.graphPlot(T,E,M)
-rm.simulate(N)
+totalStates = ising.simulate(ising.initialstate(configuration.N,configuration.M))
+np.save('./data/time',np.asarray(totalStates))
