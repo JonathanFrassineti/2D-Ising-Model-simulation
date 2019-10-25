@@ -6,167 +6,117 @@ Created on Tue Oct 15 14:01:39 2019
 """
 import numpy as np
 from numpy.random import rand
-import matplotlib.pyplot as plt
-
-
-class Ising():
-    #This class simulates the Ising model in 2 dimensions.
     
-    def initialstate(self,N):
-        """This method generates a random spin configuration 
-        for the initial condition.
-           
-        Parameters:
-            N : length of the square lattice (N*N).
+def initialstate(N,M):
+    """This method generates a random spin configuration for the initial condition.
+       
+    Parameters
+        N : length of the lattice.
+        M : width of the lattice.
+    
+    Returns:
+        The state of the initial configuration of the (N*M) spins. 
+        
+    Raise:
+        ValueError if length or width of the lattice is less than 1."""
+    if N < 1 or M < 1:
+        raise ValueError('Both dimensions of the lattice must be > 1, but are {} and {}'.format(N,M))
+    np.random.seed(1)
+    initState = np.random.choice([-1,1],size=(N,M)) 
+    return initState
+        
+def montmove(config,beta):
+    """This method creates a Monte Carlo 
+    move using the Metropolis algorithm.
+        
+    Parameters:
+        config: state of the configuration created by initialstate(N,M).
+        beta: 1/kT, where T is temperature and Boltzmann constant k is out equal to 1.
             
-        Returns:
-            The state of the configuration of the (N*N) spins. """
-        state = np.random.choice([-1,1],size=(N,N))
-        return state
-        
+    Returns:
+        The modified state of the lattice where the energy is lower than the initial one."""
+    length = len(config)
+    width = len(config[0])
+    for i in range(length):
+        for j in range(width):
+            x = np.random.randint(0,length)
+            y = np.random.randint(0,width)
+            #State of the (x,y) spin in the lattice.
+            spin = config[x,y]
+            #State of the nearest neighbours spins in the lattice (there are 4).
+            others = config[(x+1)%length,y] + config[x,(y+1)%width] + config[(x-1)%length,y] + config[x,(y-1)%width]
+            #Energy change if spin (x,y) is flipped, according to the surrounding spins."        
+            energyCost = 2*spin*others
+            #If the energy change is negative, accept the move and flip the spin, otherwise accept the move with probability exp(-cost*beta), and flip the spin.
+            if energyCost < 0 :
+                spin *= -1
+            elif rand() < np.exp(-energyCost*beta):
+                spin *= -1  
+            #New state of the spin."  
+            config[x,y] = spin         
+    return config
     
-    def montmove(self,N,config,beta):
-        """This method creates a Monte Carlo 
-        move using the Metropolis algorithm.
+def calculateEnergy(config):
+    """This method calculates the energy of a given configuration, given the exchange constant J = 1.
         
-        Parameters:
-            N : length of the square lattice (N*N).
-            config: state of the configuration created by 
-            initialstate(N).
-            beta: 1/kT, where T is temperature and Boltzmann constant
-            k is out equal to 1.
+    Parameters:
+        config: state of the configuration created by initialstate(N,M).
             
-        Returns:
-            The modified state of the lattice where the energy is
-            lower than the initial one.
-        """
-        for i in range(N):
-            for j in range(N):
-                x = np.random.randint(0,N)
-                y = np.random.randint(0,N)
-                #State of the (x,y) spin in the lattice.
-                z = config[x,y]
-                #State of the nearest neighbours spins in the lattice (there are 4).
-                s = config[(x+1)%N,y] + config[x,(y+1)%N] + config[(x-1)%N,y] + config[x,(y-1)%N]
-                #Energy change if spin (x,y) is flipped, according to the surrounding spins."        
-                cost = 2*s*z
-                #If the energy change is negative, accept the move and flip the spin, otherwise accept the move with probability exp(-cost*beta), and flip the spin.
-                if cost < 0 :
-                    z *= -1
-                elif rand() < np.exp(-cost*beta):
-                    z *= -1  
-                #New state of the spin."  
-                config[x,y] = z          
-        return config
+    Returns:
+        The calculated energy of the modified configuration of the lattice."""
+    energy = 0
+    for i in range(len(config)):
+        for j in range(len(config[0])):
+            spinEnergy = config[i,j]
+            othersEnergy = config[(i+1)%len(config),j] + config[i,(j+1)%len(config[0])] + config[(i-1)%len(config),j] + config[i,(j-1)%len(config[0])]
+            #The change in energy is given by the product of the (x,y) spin and the 4 nearest neighbours spins.
+            energy += -spinEnergy*othersEnergy
+    return energy/4
     
-    def energy(self,N,config):
-        """This method calculates the energy of a 
-        given configuration, given the exchange constant J = 1.
+def calculateMagn(config):
+    """This method calculates the magnetization of a given configuration of spins.
         
-        Parameters:
-            N : length of the square lattice (N*N).
-            config: state of the configuration created by 
-            initialstate(N).
+    Parameters:
+        config: state of the configuration created by initialstate(N,M).
             
-        Returns:
-            The calculated energy of the modified configuration
-            of the lattice.
-        """
-        energy = 0
-        for i in range(len(config)):
-            for j in range(len(config)):
-                zz = config[i,j]
-                ss = config[(i+1)%N,j] + config[i,(j+1)%N] + config[(i-1)%N,j] + config[i,(j-1)%N]
-                #The change in energy is given by the product of the (x,y) spin and the 4 nearest neighbours spins.
-                energy += -ss*zz
-        return energy/4
-    
-    def mag(self,config):
-        """This method calculates the magnetization of a 
-        given configuration of spins.
-        
-        Parameters:
-            config: state of the configuration created by 
-            initialstate(N).
+    Returns:
+        The magnetization of the modified lattice, which is the sum of all the spins."""
+    magnetization = np.sum(config)
+    return magnetization
             
-        Returns:
-            The magnetization of the modified lattice, 
-            which is the sum of all the spins.
-        """
-        magn = np.sum(config)
-        return magn
-        
-    
-    def simulate(self,N):   
-        """This module simulates the Ising model lattice 
+def simulate(config):   
+    """This module simulates the Ising model lattice 
         for a given temperature, under the critical temperature, 
         where the systemis ordered (ferromagnetic state).
+        This also saves an array with the simulation data of the lattice.
         
-        Parameters:
-            N : length of the square lattice (N*N).
+    Parameters:
+        config: state of the configuration created by initialstate(N,M).
             
-        Reurns:
-            The time evolution of the lattice configuration
-            for a given temperature.
+    Returns:
+        The different states during time.
         """
-        temp = 1 # Initialise the lattice with temperature equal to 1.
-        configuration = np.random.choice([-1,1],size=(N,N))
-        f = plt.figure(figsize=(15, 15), dpi=80);    
-        self.configurationPlot(f, configuration, 0, N, 1)
-        msrmnt = 1001
-        for i in range(msrmnt):
-            a = self.montmove(N,configuration, 1.0/temp)
-            if i == 1:       self.configurationPlot(f, configuration, i, N, 2)
-            if i == 4:       self.configurationPlot(f, configuration, i, N, 3)
-            if i == 32:      self.configurationPlot(f, configuration, i, N, 4)
-            if i == 100:     self.configurationPlot(f, configuration, i, N, 5)
-            if i == 1000:    self.configurationPlot(f, configuration, i, N, 6)
-        f.savefig('configPlot.png') 
-        return a
-           
-        
-    def configurationPlot(self, f, configuration, i, N, n):
-        """This module plots the configuration once 
-        passed to it along with time, for a given T.
-        
-        Parameters:
-            f: figure to plot.
-            configuration: state of the configuration created by 
-            initialstate(N).
-            i: time interval.
-            N: length of the square lattice (N*N).
-            n: number of subplot.
-        """
-        X, Y = np.meshgrid(range(N), range(N))
-        sp =  f.add_subplot(3, 3, n)  
-        plt.setp(sp.get_yticklabels(), visible=False)
-        plt.setp(sp.get_xticklabels(), visible=False)      
-        plt.pcolormesh(X, Y, configuration, cmap=plt.cm.RdBu)
-        plt.title('Time=%d'%i); plt.axis('tight')    
-        plt.show()
+    temperature = 1 # Initialise the lattice with a specific temperature.
+    initState = config.copy()   
+    evolutionSteps = 1001
+    states = [initState]
+    for i in range(evolutionSteps):
+        modState = montmove(config, 1.0/temperature)
+        if i == 1:
+            state2 = modState.copy() 
+            states.append(state2)    
+        if i == 4:   
+            state3 = modState.copy()
+            states.append(state3)
+        if i == 32:  
+            state4 = modState.copy()
+            states.append(state4)
+        if i == 100:  
+            state5 = modState.copy()
+            states.append(state5)
+        if i == 1000:   
+            state6 = modState.copy()
+            states.append(state6)
+    return states   
     
-    def graphPlot(self,T,E,M):
-        """ This method plots the magnetization and the energy
-        of the lattice.
-        
-        Parameters:
-            T: temperature.
-            E: energy of the lattice.
-            M: magnetization of the lattice.
-        """
-        f = plt.figure(figsize=(18, 18)) # plot the calculated values    
-        sp =  f.add_subplot(2, 2, 1 )
-        plt.scatter(T, E, s=50, marker='o', color='IndianRed')
-        plt.xlabel("Temperature (T)", fontsize=20)
-        plt.ylabel("Energy ", fontsize=20)        
-        plt.axis('tight')
-        sp =  f.add_subplot(2, 2, 2 )
-        plt.scatter(T, abs(M), s=50, marker='o', color='RoyalBlue')
-        plt.xlabel("Temperature (T)", fontsize=20) 
-        plt.ylabel("Magnetization ", fontsize=20)   
-        plt.axis('tight')
-        f.savefig('energy_magnetization.png')
-        
-                
-if __name__ == "main":
-    pass  
+
