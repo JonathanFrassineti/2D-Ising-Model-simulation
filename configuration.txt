@@ -3,3 +3,11 @@ N = 16
 M = 16 
 numberTemp = 80 
 eqSteps = 1024 
+
+[paths]
+time_pic: ./images/timeEvolution.png
+enemag_pic: ./images/energy_magnetization.png
+
+my_time: ./data/time.npy
+my_ene: ./data/ene.npy
+my_mag: ./data/mag.npy
