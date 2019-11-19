@@ -48,8 +48,8 @@ for tempInterval in range(numberTemp):
     Energy[tempInterval] = n1*Energy1
     Magn[tempInterval] = n1*Magn1
     
-np.save('./data/ene',configuration.Energy)
-np.save('./data/mag',configuration.Magn)
+np.save('./data/ene',Energy)
+np.save('./data/mag',Magn)
 
 totalStates = ising.simulate(ising.initialstate(N,M))
 np.save('./data/time',np.asarray(totalStates))
