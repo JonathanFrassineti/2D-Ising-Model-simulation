@@ -18,6 +18,9 @@ from hypothesis import given
 def test_initialstate(N,M):
     #Initialazing the model with N*M spins of values 1 and -1."
     model = ising.initialstate(N,M) 
+    #Test if the dimensions of the lattice are N and M."
+    assert len(model) == N
+    assert len(model[0]) == M
     abs_model = np.abs(model)
     #Test if all the spins have really the values 1 and -1."
     assert abs_model.all() == 1 
