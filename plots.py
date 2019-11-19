@@ -10,12 +10,20 @@ import sys
 from sys import argv
 import configparser
 
-config = configparser.ConfigParser()
-config.read(sys.argv[1])
+configu = configparser.ConfigParser()
+configu.read(sys.argv[1])
 
-N = config.get('settings', 'N')
-M = config.get('settings', 'M')
-numberTemp = config.get('settings', 'numberTemp')
+N = configu.get('settings', 'N')
+M = configu.get('settings', 'M')
+numberTemp = configu.get('settings', 'numberTemp')
+
+source1 = configu.get('paths','my_time')
+source2 = configu.get('paths','my_ene')
+source3 = configu.get('paths','my_mag')
+
+destination1 = configu.get('paths','time_pic')
+destination2 = configu.get('paths','enemag_pic')
+
 
 N = int(N)
 M = int(M)
@@ -34,7 +42,7 @@ def configurationPlot():
         i: time interval.
         N: length of the square lattice (N*N).
         n: number of subplot."""
-    config = np.load(sys.argv[2])
+    config = np.load(source1) 
     i = [0,1,4,32,100,1000]
     f = plt.figure(figsize=(15, 15), dpi=80)
     X, Y = np.meshgrid(range(N), range(M))
@@ -45,13 +53,13 @@ def configurationPlot():
         plt.pcolormesh(X, Y, config[n], cmap=plt.cm.RdBu)
         plt.title('Time=%d'%i[n]) 
         plt.axis('tight')    
-    f.savefig('./images/timeEvolution.png')
+    f.savefig(destination1)
     
 def graphPlot():
     """ This method plots the magnetization and the energy of the lattice.
     """
-    energy = np.load(sys.argv[3])  
-    magnetization = np.load(sys.argv[4])    
+    energy = np.load(source2)   
+    magnetization = np.load(source3)    
     f = plt.figure(figsize=(18, 18)) # plot the calculated values    
     sp = f.add_subplot(2, 2, 1 )
     plt.scatter(T, energy, s=50, marker='o', color='IndianRed')
@@ -63,7 +71,7 @@ def graphPlot():
     plt.xlabel("Temperature (T)", fontsize=20) 
     plt.ylabel("Magnetization ", fontsize=20)   
     plt.axis('tight')
-    f.savefig('./images/energy_magnetization.png')
+    f.savefig(destination2)
 
 configurationPlot()
 graphPlot()
