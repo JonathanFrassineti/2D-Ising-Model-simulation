@@ -36,7 +36,7 @@ Repeat 2-4.
 For references about Metropolis algorithm, see [this link](https://www.asc.ohio-state.edu/braaten.1/statphys/Ising_MatLab.pdf).
 
 ## Structure of the project
-In order to start the Ising model, the user has to launch the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) which imports its parameters from [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.py); there could be different types of configurations for the model, so the user has to specify the configuration he wants when launching the simulation file.
+In order to start the Ising model, the user has to launch the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) which imports its parameters from [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt); there could be different types of configurations for the model, depending on the size of the lattice or the MonteCarlo steps, so the user has to specify the configuration he wants when launching the simulation file from the command line (Anaconda Powershell Prompt) with the syntax ***"python simulation.py name_of_the_configuration"*** (in our case, configuration.txt).
 
 This is how I divided my project into blocks:
 
@@ -44,9 +44,10 @@ This is how I divided my project into blocks:
 
 - In the file [testing](https://github.com/JonathanFrassineti/Software-Project/blob/master/testing.py) I have tested all the Ising functions to ensure that all of them work properly, using hypothesis testing.
 
-- In the file [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.py) there are all the definitions of the parameters used in the simulation file, as number of spins per lattice (N*M), temperature intervals and so on. I used the library ConfigParser in order to allow my program to use different types of configurations.
+- In the file [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt) there are all the definitions of the parameters used in the simulation file, as number of spins per lattice (N*M), temperature intervals and so on. It's a .txt file that is imported in simulation file.
 
 - In the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) there is the main part of the code, where I have used the functions of ising file in order to calculate the energy and the magnetization of a configuration of spins for a range of temperatures across the critical one ***T<sub>c***, showing a steeply decrease in energy from high temperatures to low ones and a rapidly increase in magnetization, a clear sign of a phase transition. In addition there is the calculation of the different states of the configuration of spins for a given temperatrue, lower than ***T<sub>c***, respect to time, which shows that the system coarsens toward the configuration of all spins aligned; then I saved these states in an array to process them in further data analysis.
+Here I used the ConfigParser library in order to import the configuration file from command line (Anaconda Powershell Prompt), and passing its parameters to the program.
 
 - In file [plots](https://github.com/JonathanFrassineti/Software-Project/blob/master/plots.py) there are the two functions that respectively plot energy and magnetization and the time evolution of the system, loading the data from the saved arrays.
 
