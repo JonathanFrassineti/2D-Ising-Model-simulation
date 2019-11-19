@@ -36,7 +36,10 @@ Repeat 2-4.
 For references about Metropolis algorithm, see [this link](https://www.asc.ohio-state.edu/braaten.1/statphys/Ising_MatLab.pdf).
 
 ## Structure of the project
-In order to start the Ising model, the user has to launch the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) which imports its parameters from [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt); there could be different types of configurations for the model, depending on the size of the lattice or the MonteCarlo steps, so the user has to specify the configuration he wants when launching the simulation file from the command line (Anaconda Powershell Prompt) with the syntax ***"python simulation.py name_of_the_configuration"*** (in our case, configuration.txt).
+These are the steps in order to start the program and to plot the results:
+1) First, the user has to choose beetween the different configurations of the lattice (in our case there is only one, configuration.txt) and eventually write a new one, using the syntax of [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt).
+2) Then, to start the Ising model the user has to launch the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) which imports its parameters from [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt) using ConfigParser library; there could be different types of configurations for the model, depending on the size of the lattice or the MonteCarlo steps, so the user has to specify the configuration he wants when launching the simulation file from the command line with the syntax ***"python simulation.py name_of_the_configuration"*** (in our case, configuration.txt).
+3) At the end, the user has to launch the [plots](https://github.com/JonathanFrassineti/Software-Project/blob/master/plots.py) file with the data he wants to plot; from command line, the syntax is  ***"python plots.py name_of_the_configuration 1st_array_data 2nd_array_data 3rd_array_data"*** (in our case, configuration.txt, ./data/time.npy, ./data/ene.npy and ./data/mag.npy), where the three arrays are the data saved from the simulation of the Ising model and represent the time evolution, the energy and the magnetization of the lattice.
 
 This is how I divided my project into blocks:
 
@@ -47,9 +50,9 @@ This is how I divided my project into blocks:
 - In the file [configuration](https://github.com/JonathanFrassineti/Software-Project/blob/master/configuration.txt) there are all the definitions of the parameters used in the simulation file, as number of spins per lattice (N*M), temperature intervals and so on. It's a .txt file that is imported in simulation file.
 
 - In the file [simulation](https://github.com/JonathanFrassineti/Software-Project/blob/master/simulation.py) there is the main part of the code, where I have used the functions of ising file in order to calculate the energy and the magnetization of a configuration of spins for a range of temperatures across the critical one ***T<sub>c***, showing a steeply decrease in energy from high temperatures to low ones and a rapidly increase in magnetization, a clear sign of a phase transition. In addition there is the calculation of the different states of the configuration of spins for a given temperatrue, lower than ***T<sub>c***, respect to time, which shows that the system coarsens toward the configuration of all spins aligned; then I saved these states in an array to process them in further data analysis.
-Here I used the ConfigParser library in order to import the configuration file from command line (Anaconda Powershell Prompt), and passing its parameters to the program.
+Here I used the ConfigParser library in order to import the configuration file from command line, and passing its parameters to the program.
 
-- In file [plots](https://github.com/JonathanFrassineti/Software-Project/blob/master/plots.py) there are the two functions that respectively plot energy and magnetization and the time evolution of the system, loading the data from the saved arrays.
+- In file [plots](https://github.com/JonathanFrassineti/Software-Project/blob/master/plots.py) there are the two functions that respectively plot the time evolution of the system and the energy and the magnetization, loading the data from the saved arrays from command line.
 
 To show you some results, this is how the simulation of a given configuration looks like, for a given temperature and during the time: ![config](./images/timeEvolution.png)
 
