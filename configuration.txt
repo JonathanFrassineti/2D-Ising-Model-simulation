@@ -1,0 +1,5 @@
+[settings]
+N = 16
+M = 16 
+numberTemp = 80 
+eqSteps = 1024 
