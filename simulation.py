@@ -19,6 +19,10 @@ M = config.get('settings', 'M')
 numberTemp = config.get('settings', 'numberTemp')
 eqSteps = config.get('settings', 'eqSteps')
 
+destination1 = config.get('paths','my_time')
+destination2 = config.get('paths','my_ene')
+destination3 = config.get('paths','my_mag')
+
 N = int(N)
 M = int(M)
 numberTemp = int(numberTemp)
@@ -48,8 +52,8 @@ for tempInterval in range(numberTemp):
     Energy[tempInterval] = n1*Energy1
     Magn[tempInterval] = n1*Magn1
     
-np.save('./data/ene',Energy)
-np.save('./data/mag',Magn)
+np.save(destination2,Energy)
+np.save(destination3,Magn)
 
 totalStates = ising.simulate(ising.initialstate(N,M))
-np.save('./data/time',np.asarray(totalStates))
+np.save(destination1,np.asarray(totalStates))
