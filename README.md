@@ -57,5 +57,10 @@ Here I used the ConfigParser library in order to import the configuration file f
 
 - In file [plots](https://github.com/JonathanFrassineti/Software-Project/blob/master/plots.py) there are the two functions that respectively plot the time evolution of the system and the energy and the magnetization, loading the data from the saved arrays from command line.
 
-To show you some results, this is how the simulation of a given configuration looks like, for a given temperature and during the time: ![config](./images/timeEvolution.png)
+To show you some results:
+1) this is the plot of energy vs T and magnetization vs T.
+![config](./images/energy_magnetization.png)
+
+2) and this is how the simulation of a given configuration looks like, for a given temperature and during the time: 
+![config](./images/timeEvolution.png)
 
