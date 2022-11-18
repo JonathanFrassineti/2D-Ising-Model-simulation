@@ -84,7 +84,7 @@ def calculateMagn(config):
     magnetization = np.sum(config)
     return magnetization
             
-def simulate(config):   
+def simulate(config,lattice_T):   
     """This module simulates the Ising model lattice 
         for a given temperature, under the critical temperature, 
         where the systemis ordered (ferromagnetic state).
@@ -96,7 +96,7 @@ def simulate(config):
     Returns:
         The different states during time.
         """
-    temperature = 1 # Initialise the lattice with a specific temperature.
+    temperature = lattice_T # Initialise the lattice with a specific temperature.
     initState = config.copy()   
     evolutionSteps = 1001
     states = [initState]

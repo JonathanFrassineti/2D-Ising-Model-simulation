@@ -4,6 +4,7 @@ M = 16
 numberTemp = 50
 startTemp = 0.01
 endTemp = 5 
+latticeTemp = 0.5
 eqSteps = 512
 
 [paths]

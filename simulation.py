@@ -20,6 +20,8 @@ numberTemp = config.get('settings', 'numberTemp')
 startTemp = config.get('settings', 'startTemp')
 endTemp = config.get('settings', 'endTemp')
 eqSteps = config.get('settings', 'eqSteps')
+lattice_T = config.get('settings', 'latticeTemp')
+
 
 destination1 = config.get('paths','my_time')
 destination2 = config.get('paths','my_ene')
@@ -30,6 +32,7 @@ M = int(M)
 numberTemp = int(numberTemp)
 startTemp = float(startTemp)
 endTemp = float(endTemp)
+lattice_T = float(lattice_T)
 eqSteps = int(eqSteps)
 
 T = np.linspace(startTemp,endTemp,numberTemp) 
@@ -66,7 +69,7 @@ np.save(destination3,Magn)
 print("Energies and magnetization saved.")
 
 print("Now, simulate the system in the ordered phase along time.")
-totalStates = ising.simulate(ising.initialstate(N,M))
+totalStates = ising.simulate(ising.initialstate(N,M),lattice_T)
 np.save(destination1,np.asarray(totalStates))
 
 print("Simulation saved.")

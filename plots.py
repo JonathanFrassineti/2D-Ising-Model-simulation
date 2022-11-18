@@ -19,6 +19,7 @@ M = configu.get('settings', 'M')
 numberTemp = configu.get('settings', 'numberTemp')
 startTemp = configu.get('settings', 'startTemp')
 endTemp = configu.get('settings', 'endTemp')
+lattice_T = configu.get('settings', 'latticeTemp')
 
 source1 = configu.get('paths','my_time')
 source2 = configu.get('paths','my_ene')
@@ -33,6 +34,7 @@ M = int(M)
 numberTemp = int(numberTemp)
 startTemp = float(startTemp)
 endTemp = float(endTemp)
+lattice_T = float(lattice_T)
 
 T = np.linspace(startTemp,endTemp,numberTemp) 
 
@@ -49,16 +51,17 @@ def configurationPlot():
         n: number of subplot."""
     config = np.load(source1) 
     i = [0,1,4,32,100,1000]
-    f = plt.figure(figsize=(15, 15), dpi=80)
+    f = plt.figure(figsize=(15, 10), dpi=80)
     X, Y = np.meshgrid(range(N), range(M))
     for n in range(len(i)):
         sp =  f.add_subplot(3, 3, n+1)  
         plt.setp(sp.get_yticklabels(), visible=False)
         plt.setp(sp.get_xticklabels(), visible=False)      
         plt.pcolormesh(X, Y, config[n], cmap=plt.cm.RdBu)
-        plt.title('Time=%d'%i[n]) 
+        plt.title('Time=%d'%i[n], fontsize = 15) 
         plt.axis('tight')  
         # plt.show()  
+    plt.suptitle("Spins configuration at T = {} K".format(lattice_T), fontsize = 20)
     f.savefig(destination1)
     
 def graphPlot():
@@ -66,7 +69,7 @@ def graphPlot():
     """
     energy = np.load(source2)   
     magnetization = np.load(source3)    
-    f = plt.figure(figsize=(18, 18)) # plot the calculated values    
+    f = plt.figure(figsize=(18, 12)) # plot the calculated values    
     sp = f.add_subplot(2, 2, 1 )
     plt.scatter(T, energy, s=50, marker='o', color='IndianRed')
     plt.xlabel("Temperature (T)", fontsize=20)
