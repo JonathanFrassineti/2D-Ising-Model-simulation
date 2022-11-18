@@ -1,8 +1,10 @@
 [settings]
-N = 24
-M = 24 
-numberTemp = 100 
-eqSteps = 1024
+N = 16
+M = 16
+numberTemp = 50
+startTemp = 0.01
+endTemp = 5 
+eqSteps = 512
 
 [paths]
 time_pic: ./images/timeEvolution.png

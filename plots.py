@@ -10,12 +10,15 @@ import sys
 from sys import argv
 import configparser
 
+
 configu = configparser.ConfigParser()
 configu.read(sys.argv[1])
 
 N = configu.get('settings', 'N')
 M = configu.get('settings', 'M')
 numberTemp = configu.get('settings', 'numberTemp')
+startTemp = configu.get('settings', 'startTemp')
+endTemp = configu.get('settings', 'endTemp')
 
 source1 = configu.get('paths','my_time')
 source2 = configu.get('paths','my_ene')
@@ -28,8 +31,10 @@ destination2 = configu.get('paths','enemag_pic')
 N = int(N)
 M = int(M)
 numberTemp = int(numberTemp)
+startTemp = float(startTemp)
+endTemp = float(endTemp)
 
-T = np.linspace(1.50,3.50,numberTemp)
+T = np.linspace(startTemp,endTemp,numberTemp) 
 
 def configurationPlot():
     """This module plots the configuration once 
@@ -52,7 +57,8 @@ def configurationPlot():
         plt.setp(sp.get_xticklabels(), visible=False)      
         plt.pcolormesh(X, Y, config[n], cmap=plt.cm.RdBu)
         plt.title('Time=%d'%i[n]) 
-        plt.axis('tight')    
+        plt.axis('tight')  
+        # plt.show()  
     f.savefig(destination1)
     
 def graphPlot():
@@ -71,6 +77,7 @@ def graphPlot():
     plt.xlabel("Temperature (T)", fontsize=20) 
     plt.ylabel("Magnetization ", fontsize=20)   
     plt.axis('tight')
+    plt.show()
     f.savefig(destination2)
 
 configurationPlot()
