@@ -75,3 +75,5 @@ def graphPlot():
 
 configurationPlot()
 graphPlot()
+
+print("Figures saved!")

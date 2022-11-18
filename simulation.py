@@ -36,6 +36,8 @@ n1 = 1.0/(eqSteps*N*M)
 
 for tempInterval in range(numberTemp):
     
+    print("Temperature point: {}/{}".format(tempInterval,numberTemp))
+    
     config = ising.initialstate(N,M)
     Energy1 = Magn1 = 0
     
@@ -44,16 +46,23 @@ for tempInterval in range(numberTemp):
 
     for i in range(eqSteps):
         ising.montmove(config,inverseTemp[tempInterval])           
-        Energy = ising.calculateEnergy(config)     # calculate the energy
-        Magn = ising.calculateMagn(config)        # calculate the magnetisation
-        Energy1 += Energy
-        Magn1 +=  Magn
+        Energy2 = ising.calculateEnergy(config)     # calculate the energy
+        Magn2 = ising.calculateMagn(config)        # calculate the magnetisation
+        Energy1 += Energy2
+        Magn1 +=  Magn2
 
     Energy[tempInterval] = n1*Energy1
     Magn[tempInterval] = n1*Magn1
+  
+print("Simulation done!")
     
 np.save(destination2,Energy)
 np.save(destination3,Magn)
 
+print("Energies and magnetization saved.")
+
+print("Now, simulate the system in the ordered phase along time.")
 totalStates = ising.simulate(ising.initialstate(N,M))
 np.save(destination1,np.asarray(totalStates))
+
+print("Simulation saved.")

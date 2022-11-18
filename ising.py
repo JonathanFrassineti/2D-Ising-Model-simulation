@@ -101,6 +101,7 @@ def simulate(config):
     evolutionSteps = 1001
     states = [initState]
     for i in range(evolutionSteps):
+        #print("Simulation at time {}".format(i))
         modState = montmove(config, 1.0/temperature)
         if i == 1:
             state2 = modState.copy() 
@@ -117,6 +118,8 @@ def simulate(config):
         if i == 1000:   
             state6 = modState.copy()
             states.append(state6)
-    return states   
+    return states  
+    
+    print("Simulation done!") 
     
 
